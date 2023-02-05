@@ -85,6 +85,7 @@ The sketch is not compatible with the RFM12B radio module, nor the Arduino Due.
 - emonTx V3.4
 - 3 x Clip on CT sensors
 - 1 x AC-AC adapter
+- ESP8266 module (Wemos D1 pro)
 - USB to UART programmer (to upload firmware)
 
 ## Upload pre compiled
