@@ -25,6 +25,12 @@ Pulse counting and temperature monitoring using a single DS18B20 sensor is suppo
 - Suitable for operation on a three-phase, 4-wire supply at 50 or 60 Hz.
 - Can be calibrated for any voltage and current (default calibration is for emonTx with 100 A CTs & UK a.c. adapter).
 
+## My Modifications
+- Set `EMONESP` as default radio (9600 baud)
+- `vCal` set to fit bell transformer [Kanlux KTF-8-24](https://www.kanlux.com/en/product/23260/KTF-8-24) on ~8VAC terminals
+- `i1Cal` - `i4Cal` set to 30A CT transformers instead of 100A
+- Extended serial output for another parameters: `vrms,frq,irms1,irms2,irms3,irms4,ct1,ct2,ct3,ct4,act1,act2,act3,act4,pf1,pf2,pf3,pf4,power,apower,t1,pulses` 
+
 ## Limitations
 
 Because the voltage of only one phase can be measured, the sketch must assume that
