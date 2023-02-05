@@ -65,6 +65,7 @@ static void load_config(bool verbose)
 //    RF_freq      = data.RF_freq;
       networkGroup = data.networkGroup;
       vCal         = data.vCal;
+      //vCal         = 266.08;
       i1Cal        = data.i1Cal;
       i1Lead       = data.i1Lead;
       i2Cal        = data.i2Cal;

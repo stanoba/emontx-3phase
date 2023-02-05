@@ -78,8 +78,8 @@ const int version = 14;                          // The firmware version 1.4
                                                  //   Set to 0 for electronic sensor with solid-state output.
                                                  
 // RFM settings                                  // THIS SKETCH WILL NOT WORK WITH THE RFM12B radio.
-//#define EMONESP                                // Uncomment to use the sketch with EmonESP and comment out the line below #define RFM69CW
-#define RFM69CW                                  // The type of Radio Module, or none.
+#define EMONESP                                // Uncomment to use the sketch with EmonESP and comment out the line below #define RFM69CW
+//#define RFM69CW                                  // The type of Radio Module, or none.
                                                  // Can be RFM69CW 
                                                  //   or SERIALOUT if a wired serial connection is used 
                                                  //   or EMONESP if an ESP WiFi module is used
@@ -115,25 +115,26 @@ int networkGroup = 210;                          //  wireless network group
 // constants which must be set individually for each system
 
 
-double vCal = 268.97;     // calculated value is 240:11.6 for UK transformer x 13:1 for resistor divider = 268.97
+// double vCal = 268.97;     // calculated value is 240:11.6 for UK transformer x 13:1 for resistor divider = 268.97
+double vCal = 266.08;     // calculated value is 240:11.6 for UK transformer x 13:1 for resistor divider = 268.97
                           //   for the EU adapter use 260.00, for the USA adapter use 130.00
 #define VCAL_EU 260.0     // can use DIP switch 2 to set this as the starting value.                     
-double i1Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
-double i2Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
-double i3Cal = 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
-double i4Cal = 16.67;     // calculated value is 100A:0.05A for transformer / 120 Ohms for resistor
+double i1Cal = 30; // 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
+double i2Cal = 30; // 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
+double i3Cal = 30; // 90.91;     // calculated value is 100A:0.05A for transformer / 22 Ohms for resistor = 90.91, or 60.6 for emonTx Shield
+double i4Cal = 30; // 16.67;     // calculated value is 100A:0.05A for transformer / 120 Ohms for resistor
 
 double i1Lead = 2.00;     // degrees by which the v.t. phase error leads the c.t.1 phase error
 double i2Lead = 2.00;     // degrees by which the v.t. phase error leads the c.t.2 phase error
 double i3Lead = 2.00;     // degrees by which the v.t. phase error leads the c.t.3 phase error
-double i4Lead = 0.20;     // degrees by which the v.t. phase error leads the c.t.4 phase error
+double i4Lead = 2.00; //0.20;     // degrees by which the v.t. phase error leads the c.t.4 phase error
 
 #define WIRES 4-WIRE      // either 4-WIRE (default, measure voltage L1 - N) or 3-WIRE (no neutral, measure voltage L1 - L2)
 
 #define CT1Phase PHASE1   // either PHASE1, PHASE2 or PHASE3 to attach c.t.1 to a phase. This c.t. MUST be used.
 #define CT2Phase PHASE2   // similarly to attach c.t.2 to a phase. This c.t. MUST be used.
 #define CT3Phase PHASE3   // similarly to attach c.t.3 to a phase. This c.t. MUST be used, do not comment this line.
-#define CT4Phase PHASE1   // similarly to attach c.t.4 to a phase or comment this line if c.t.4 is not used 
+#define CT4Phase PHASE3   // similarly to attach c.t.4 to a phase or comment this line if c.t.4 is not used 
                           //   (See also NUMSAMPLES below)
 #define LEDISLOCK         // comment this out for LED pulsed during transmission
                           //  otherwise LED shows loop is locked, and occults to show transmission, but that is not easily visible
@@ -427,9 +428,9 @@ digitalWrite(LEDPIN, LOW);
    #ifdef EMONESP
      Serial.println(F("Using ESP8266 serial output"));
    #endif
-   load_config(true);                                 // Load RF config from EEPROM (if any exists)
+   //load_config(true);                                 // Load RF config from EEPROM (if any exists)
   #else   // #if !defined SERIALOUT && !defined EMONESP 
-   load_config(false);   
+   //load_config(false);
   #endif  // #if !defined SERIALOUT && !defined EMONESP 
   
   #if !defined SERIALOUT && !defined EMONESP
@@ -940,23 +941,62 @@ void sendResults()
   #endif  // if defined SERIALOUT && !defined EMONESP
 
   #if defined EMONESP && !defined SERIALOUT
-    #if WIRES == 3-WIRE
-    Serial.print(F("ct1:")); Serial.print(realPower1+realPower2);            // These for compatibility, but whatever you need if the receiver is configured to suit. 
-    Serial.print(F(",ct2:0.0"));
-    #else
-    Serial.print(F("ct1:")); Serial.print(realPower1);
+
+    Serial.print(F("vrms:")); Serial.print(Vrms);
+    Serial.print(F(",frq:")); Serial.print(frequency,2);
+
+    Serial.print(F(",irms1:")); Serial.print(I1rms,3);
+    Serial.print(F(",irms2:")); Serial.print(I2rms,3);
+    Serial.print(F(",irms3:")); Serial.print(I3rms,3);
+    Serial.print(F(",irms4:")); Serial.print(I4rms,3);
+
+    Serial.print(F(",ct1:")); Serial.print(realPower1);
     Serial.print(F(",ct2:")); Serial.print(realPower2);
-    #endif    
     Serial.print(F(",ct3:")); Serial.print(realPower3);
     Serial.print(F(",ct4:")); Serial.print(realPower4);
-    Serial.print(F(",vrms:")); Serial.print(Vrms);
 
-    
-    for(byte j=0;j<MAXONEWIRE;j++)
-    {
-      Serial.print(F(",t")); Serial.print(j+1); Serial.print(F(":"));
-      Serial.print(emontx.temp[j]/100.0);
-    }
+    Serial.print(F(",act1:")); Serial.print(apparentPower1);
+    Serial.print(F(",act2:")); Serial.print(apparentPower2);
+    Serial.print(F(",act3:")); Serial.print(apparentPower3);
+    Serial.print(F(",act4:")); Serial.print(apparentPower4);
+
+    Serial.print(F(",pf1:")); Serial.print(powerFactor1,3);
+    Serial.print(F(",pf2:")); Serial.print(powerFactor2,3);
+    Serial.print(F(",pf3:")); Serial.print(powerFactor3,3);
+    Serial.print(F(",pf4:")); Serial.print(powerFactor4,3);
+
+    Serial.print(F(",power:")); Serial.print((realPower1+realPower2+realPower3));
+    Serial.print(F(",apower:")); Serial.print((apparentPower1+apparentPower2+apparentPower3));
+
+// Key	Value
+// vrms	234.17
+// irms1	1.30
+// irms2	0.66
+// irms3	1.25
+// ct1	150.71
+// ct2	36.99
+// ct3	210.81
+// act1	304.16
+// act2	153.53
+// act3	293.43
+// pf1	0.50
+// pf2	0.24
+// pf3	0.72
+// power	398.52
+// apower	751.12
+
+
+
+    // for(byte j=0;j<MAXONEWIRE;j++)
+    // {
+    //   Serial.print(F(",t")); Serial.print(j+1); Serial.print(F(":"));
+    //   Serial.print(emontx.temp[j]/100.0);
+    // }
+
+    Serial.print(F(",t1:"));
+    Serial.print(emontx.temp[0]/100.0);
+
+
     Serial.print(F(",pulses:"));Serial.print(emontx.pulseCount);
     Serial.println();
     delay(50);

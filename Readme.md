@@ -61,11 +61,11 @@ The sketch is not compatible with the RFM12B radio module, nor the Arduino Due.
 
 ## Upload pre compiled
 
-- Firmware can be uploaded directly using [emonUpload](https://github.com/openenergymonitor/emonupload) tool to grab latest compiled release and upload via serial.
+- Firmware can be uploaded directly using [arduino-xloader](https://www.hobbytronics.co.uk/arduino-xloader) tool to grab latest compiled release and upload via serial.
 
 or
 
-- Download pre-compiled `.hex` from [github releases](https://github.com/openenergymonitor/emontx-3phase/releases) and upload using avrdude
+- Download pre-compiled `.hex` from [this github](https://github.com/stanoba/emontx-3phase/tree/master/compiled) and upload using avrdude
 
 Depending on your ISP
 

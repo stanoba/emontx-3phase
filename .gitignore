@@ -3,6 +3,7 @@
 .gcc-flags.json
 .piolibdeps
 .pio
+.vscode
 *~
 # Ignore list for Eagle, a PCB layout tool
 # Backup files
