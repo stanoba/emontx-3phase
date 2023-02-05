@@ -29,7 +29,29 @@ Pulse counting and temperature monitoring using a single DS18B20 sensor is suppo
 - Set `EMONESP` as default radio (9600 baud)
 - `vCal` set to fit bell transformer [Kanlux KTF-8-24](https://www.kanlux.com/en/product/23260/KTF-8-24) on ~8VAC terminals
 - `i1Cal` - `i4Cal` set to 30A CT transformers instead of 100A
-- Extended serial output for another parameters: `vrms,frq,irms1,irms2,irms3,irms4,ct1,ct2,ct3,ct4,act1,act2,act3,act4,pf1,pf2,pf3,pf4,power,apower,t1,pulses` 
+- Extended serial output for another parameters: 
+    - **vrms** - Voltage (V RMS)
+    - **frq** - Frequency (Hz)
+    - **irms1** - Current L1 (A RMS)
+    - **irms2** - Current L2 (A RMS)
+    - **irms3** - Current L3 (A RMS)
+    - **irms4** - Current CT4 (A RMS)
+    - **ct1** - Real Power L1 (A)
+    - **ct2** - Real Power L2 (A)
+    - **ct3** - Real Power L3 (A)
+    - **ct4** - Real Power CT4 (A)
+    - **act1** - Apparent Power L1 (W)
+    - **act2** - Apparent Power L2 (W)
+    - **act3** - Apparent Power L3 (W)
+    - **act4** - Apparent Power CT4 (W)
+    - **pf1** - Power Factor L1
+    - **pf2** - Power Factor L2
+    - **pf3** - Power Factor L3
+    - **pf4** - Power Factor CT4
+    - **power** - Real Power Total (W)
+    - **apower** - Apparent Power Total (W)
+    - **t1** - Temperature (1-wire DS18B20)
+    - **pulses** - Pulse Count
 
 ## Limitations
 
